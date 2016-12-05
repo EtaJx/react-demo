@@ -1,6 +1,7 @@
-'use strict'
-module.exports = function(){
-    var element = document.createElement('h1');
-    element.innerHTML = 'Hello World';
-    return element;
+var React = require('react');
+
+export default class Hello extends React.Component {
+    render() {
+        return (<h1>Hello World</h1>);
+    }
 }

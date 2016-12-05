@@ -8,3 +8,5 @@
     "dev":"webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
 
 #### 使用模块（ES6，commonJS,AMD）(react推荐使用CommonJS)
+- webpack只是一个模块合并器
+- 使用Babel来JSX语法
