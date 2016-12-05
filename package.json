@@ -1,0 +1,23 @@
+{
+  "name": "react-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neras/react-demo.git"
+  },
+  "author": "hing",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Neras/react-demo/issues"
+  },
+  "homepage": "https://github.com/Neras/react-demo#readme",
+  "dependencies": {
+    "webpack": "^1.13.3"
+  }
+}
