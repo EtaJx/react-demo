@@ -6,3 +6,5 @@
 在webpack.config.js中的entry中写上`['webpack/hot/dev-server']`(为啥)
 在package.json中添加:
     "dev":"webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
+
+#### 使用模块（ES6，commonJS,AMD）(react推荐使用CommonJS)
