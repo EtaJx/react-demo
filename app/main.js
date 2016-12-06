@@ -1,12 +1,13 @@
-var React = require('react');
+import React from 'react';
+import ReactDOM from 'react-dom'
+import Hello form './component.jsx';
 
-var ReactDOM = require('react-dom');
-var Content = React.createClass({
-	render:function(){
-		return (
-			<h1>Hello,World</h1>
-			);
-	}
-});
-
- ReactDOM.render(<Content />, document.getElementById('app'));
+class Main extends React.Conponent{
+    constructor(props){
+        super(props)
+    }
+    render(){
+        return <Hello/>
+    }
+}
+ReactDOM.render(<Main/>,document.getElementById('app'));
