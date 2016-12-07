@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import Hello form './component.jsx';
+import Hello from './component.jsx';
 
-class Main extends React.Conponent{
-    constructor(props){
-        super(props)
-    }
-    render(){
-        return <Hello/>
+class App extends React.Component{
+    render () {
+        return <p>Hello React!!!</p>;
     }
 }
-ReactDOM.render(<Main/>,document.getElementById('app'));
+ReactDOM.render(<App />,document.getElementById('app'));
