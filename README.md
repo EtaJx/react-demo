@@ -32,3 +32,6 @@ constructor(props){
 - 目前仍有一些不明白的地方
 
 #### 加载静态资源（开始官网的教程）
+- 比较顺利，从本地拿到一个json数据然后渲染到组件上
+- 遇到一个问题就是在组件中使用markdown的时候，加载了remakable或者是react-remakable依赖是，autolinker报错？？？（未解决）
+- 接下来尝试从服务器获取数据渲染到组件

@@ -2,10 +2,10 @@ var path = require('path');
 var webpack = require('webpack');
 
 var config = {
-    entry:['webpack/hot/dev-server',path.resolve(__dirname,'app/main.js')], 
+    entry:['webpack/hot/dev-server',path.resolve(__dirname,'app/comment.js')], 
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: 'dundle.js'
+        filename: 'app.js'
     },
     module: {
         loaders: [{
