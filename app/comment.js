@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var $ = require('jquery');
 //var Remarkable = require('react-remarkable');//引入markdown依赖
 
 /**
@@ -77,20 +78,71 @@ var CommentForm = React.createClass({
 
 /**
  * 在CommentBox中使用这些组件
+ * 在组件中使用可变的this.state私有函数，而不再是不可变的this.props
+ * 用简单的轮询来实时更新
  */
 var CommentBox = React.createClass({//使用React.createClass来创建一个新的React组件
-    render: function () {
+    loadCommentsFromServer: function() {
+        /**
+        * 实时更新的关键还是this.setState()的调用
+        */
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                this.setState({ data: data });
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+    getInitialState: function() {//getInitialState()在生命周期里之执行以此，并设置组件的初始状态
+        return { data: [] };
+    },
+    componentDidMount: function() {//执行一个ajax操作来获取数据，这里的componentDidMount是一个当组件被渲染时呗React自动调用的方法
+        this.loadCommentsFromServer();
+        setInterval(this.loadCommentsFromServer,this.props.pollInterval);//simple loop
+
+        // var self = this;
+        // var httpRequst = new XMLHttpRequest();
+        // httpRequst.onreadystatechange = function() {
+        //     if (httpRequst.readyState === XMLHttpRequest.DONE) {
+        //         if (httpRequst.status == 200) {
+        //             console.log(httpRequst.responseText);
+        //             this.setSate({
+        //                 data: JSON.parse(httpRequst.responseText)
+        //             });
+        //         }
+        //     }
+        // };
+        // httpRequst.open('GET', this.props.url);
+        // httpRequst.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        // httpRequst.send();
+    },
+    render: function() {
         return (//here is jsx
             <div className="commentBox">
                 <h1>Comments</h1>
-                <CommentList data={this.props.data} />
+                <CommentList data={this.state.data} />
                 <CommentForm />
             </div>//原生的html元素以小写开头
         );
     }
 });
 
+/**
+ * 移除数据的props
+ * 获取数据使用url来替代
+ * 本地模拟加一个json文件
+ * 简单配置nginx加载和上面数据一样的一个data.json文件
+ * 这里使用url请求数据
+ * 它必须重新渲染自己？？？
+ * 直到请求从服务器返回，此时该组件或许要渲染一些新的评论？
+ * 2000ms轮询以此
+ */
 ReactDOM.render(
-    <CommentBox data={data} />,
+    <CommentBox url="http://localhost:10086/hing/data.json" pollInterval={2000}/>,
     document.getElementById('content')
     );//实例化组件ReactDOM.render
