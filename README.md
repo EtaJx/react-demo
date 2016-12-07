@@ -35,3 +35,9 @@ constructor(props){
 - 比较顺利，从本地拿到一个json数据然后渲染到组件上
 - 遇到一个问题就是在组件中使用markdown的时候，加载了remakable或者是react-remakable依赖是，autolinker报错？？？（未解决）
 - 接下来尝试从服务器获取数据渲染到组件
+
+#### 从服务器拿取数据渲染到组件
+- 简易的搭建了一个nginx服务器，并允许跨域，返回一个json文件
+- 在React中使用jquery是，可以直接 `npm install jquery`，然后`var $ = require('jquery')`就可以使用，这里没有在webpack中引入，因为。。还不会(┬＿┬)
+- demo成功进行每2s一次的轮询从服务器拿取数据
+- 接下来就是写入数据，提交论
