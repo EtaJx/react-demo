@@ -47,3 +47,10 @@ constructor(props){
 - 下一步，也就是最后一步，使用webpack打包静态资源到文件
 
 #### 加载静态资源 
+- 结果：当然加载成功~~~~~(๑•ᴗ•๑)
+- 果然还是官方的文档靠谱，然后查看npm上的sass-loader说明
+- 在加载loader的时候，多个loader，写法可以为`loader:"style!css!sass"`或者`loaders:["style","css","sass"]`
+- 然后在组件中引入的时候，就像引入自己的写依赖一样就行了，注意路径问题
+
+#### 总结
+到此位置，算是成功将react+webpack打通了，后面就是使用node重构简历了

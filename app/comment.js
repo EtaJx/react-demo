@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+require('./comment.scss');
 var $ = require('jquery');
 //var Remarkable = require('react-remarkable');//引入markdown依赖
 
@@ -156,6 +157,8 @@ var CommentBox = React.createClass({//使用React.createClass来创建一个新�
         /**
          * 优化更新
          * 因为现在是用webpack-dev-server即时监听起的服务器，所以没办法（或许有办法）写入本地的json文件
+         * 在这里
+         * TODO:description
          */
         var comments = this.state.data;
         comment.id = Date.now();
