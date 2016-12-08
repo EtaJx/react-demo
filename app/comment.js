@@ -66,11 +66,59 @@ var CommentList = React.createClass({
     }
 });
 
+/**
+ * 添加新的评论
+ */
 var CommentForm = React.createClass({
+    getInitialState:function(){
+        return {author:'',text:''};
+    },
+    /**
+     * 在input框中保存用户输入的值
+     */
+    handleAuthorChange:function(e){
+        this.setState({author:e.target.value});
+    },
+    handleTextChange:function(e){
+        this.setState({text:e.target.value});
+    },
+    /**
+     * 提交表单
+     */
+    handleSubmit:function(e){
+        e.preventDefault();
+        var author = this.state.author;
+        var text = this.state.text;
+        if(!text || !author){//简单的验证
+            return;
+        }
+        // 在用户提交表单是回调调用调回调函数
+        this.props.onCommentSubmit({author:author,text:text});
+        this.setState({author:'',text:''});//在提交表单后，将input中的值清空
+
+    },
+    /**
+     * 给input赋值，并绑定事件
+     * 在React中，使用小驼峰命名规范给组件绑定事件处理器
+     */
     render: function () {
-        return (
-            <div className="commentForm">
-            </div>
+        return (//给表单绑定提交事件
+            <form className="commentForm" onSubmit={this.handleSubmit}>
+                <h4>submit comment</h4>
+                <input 
+                type="text" 
+                placeholder="Your name" 
+                value={this.state.author}
+                onChange={this.handleAuthorChange}
+                />
+                <input 
+                type="text" 
+                placeholder="Say something..." 
+                value={this.state.text}
+                onChange={this.handleTextChange}
+                />
+                <input type="submit" value="post" />
+            </form>
         );
     }
 });
@@ -98,35 +146,49 @@ var CommentBox = React.createClass({//使用React.createClass来创建一个新�
             }.bind(this)
         });
     },
+    /**
+     * 添加一个回调函数，绑定到子组件的onCommentSubmit事件上，以此来获得数据
+     */
+    handleCommentSubmit:function(comment){
+        //TODO:submit to the server adn refresh the list
+        //将数据提交到服务器
+
+        /**
+         * 优化更新
+         * 因为现在是用webpack-dev-server即时监听起的服务器，所以没办法（或许有办法）写入本地的json文件
+         */
+        var comments = this.state.data;
+        comment.id = Date.now();
+        var newComments = comments.concat([comment]);
+        this.setState({data:newComments});
+        $.ajax({
+            url:this.props.url,
+            dataType:'json',
+            type:'POST',
+            data:comment,
+            success:function(data){
+                this.setState({data:data});
+            }.bind(this),
+            error:function(xhr,status,err){
+                this.setState({data:comments});
+                console.log(this.props.url,status,err.toString());
+            }.bind(this)
+        });
+
+    },
     getInitialState: function() {//getInitialState()在生命周期里之执行以此，并设置组件的初始状态
         return { data: [] };
     },
     componentDidMount: function() {//执行一个ajax操作来获取数据，这里的componentDidMount是一个当组件被渲染时呗React自动调用的方法
         this.loadCommentsFromServer();
         setInterval(this.loadCommentsFromServer,this.props.pollInterval);//simple loop
-
-        // var self = this;
-        // var httpRequst = new XMLHttpRequest();
-        // httpRequst.onreadystatechange = function() {
-        //     if (httpRequst.readyState === XMLHttpRequest.DONE) {
-        //         if (httpRequst.status == 200) {
-        //             console.log(httpRequst.responseText);
-        //             this.setSate({
-        //                 data: JSON.parse(httpRequst.responseText)
-        //             });
-        //         }
-        //     }
-        // };
-        // httpRequst.open('GET', this.props.url);
-        // httpRequst.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        // httpRequst.send();
     },
     render: function() {
         return (//here is jsx
             <div className="commentBox">
                 <h1>Comments</h1>
                 <CommentList data={this.state.data} />
-                <CommentForm />
+                <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
             </div>//原生的html元素以小写开头
         );
     }
@@ -143,6 +205,6 @@ var CommentBox = React.createClass({//使用React.createClass来创建一个新�
  * 2000ms轮询以此
  */
 ReactDOM.render(
-    <CommentBox url="http://localhost:10086/hing/data.json" pollInterval={2000}/>,
+    <CommentBox url="http://localhost:8080/data.json" pollInterval={2000}/>,
     document.getElementById('content')
     );//实例化组件ReactDOM.render
